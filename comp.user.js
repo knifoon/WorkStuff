@@ -2,13 +2,13 @@
 // @name         compPro
 // @namespace    http://tampermonkey.net/
 // @version      0.1
-// @description  try to take over the world!
-// @author       You
+// @description  Comp Improvements
+// @author       Ricaarre
 // @match        https://compwebsite-na.amazon.com/mn/comp/packageSearch
-// @grant        GM_addStyle
+// @match        https://compwebsite-na.amazon.com/comp/packageSearch
+// @grant        GM_addStyle`
 // @run-at   document-start
 // ==/UserScript==
-
 
 GM_addStyle ( `
     .tableHeaderSort:nth-child(5),
