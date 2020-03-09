@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         compPro
-// @namespace    http://tampermonkey.net/
+// @namespace    https://github.com/knifoon/WorkStuff
 // @version      0.1
 // @description  Comp Improvements
 // @author       Ricaarre
