@@ -6,11 +6,12 @@
 // @author       Ricaarre
 // @match        https://compwebsite-na.amazon.com/mn/comp/packageSearch
 // @match        https://compwebsite-na.amazon.com/comp/packageSearch
-// @grant        GM_addStyle`
+// @grant        GM_addStyle
 // @run-at   document-start
 // ==/UserScript==
 
 GM_addStyle ( `
+    .is-it-down-stripe,
     .tableHeaderSort:nth-child(5),
     .tableHeaderSort:nth-child(6),
     .tableHeaderSort:nth-child(7),
