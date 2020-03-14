@@ -1,16 +1,17 @@
 // ==UserScript==
 // @name         compPro
-// @namespace    http://tampermonkey.net/
-// @version      0.1
+// @namespace    https://github.com/knifoon/WorkStuff
+// @version      0.2
 // @description  Comp Improvements
 // @author       Ricaarre
 // @match        https://compwebsite-na.amazon.com/mn/comp/packageSearch
 // @match        https://compwebsite-na.amazon.com/comp/packageSearch
-// @grant        GM_addStyle`
+// @grant        GM_addStyle
 // @run-at   document-start
 // ==/UserScript==
 
 GM_addStyle ( `
+    .is-it-down-stripe,
     .tableHeaderSort:nth-child(5),
     .tableHeaderSort:nth-child(6),
     .tableHeaderSort:nth-child(7),
@@ -43,3 +44,18 @@ GM_addStyle ( `
       display:none!important;
 }
 ` );
+(function(){
+// Wait for page load
+    document.addEventListener("DOMContentLoaded", function() {
+const values = {};
+// watch for results
+const targetNode = document.getElementById('shipmentListTableDiv'),
+config = { attributes: true, childList: true, subtree: true },
+callback = function(mutationsList, observer) {
+// Run after results load
+        console.log('results changed');
+};
+const observer = new MutationObserver(callback);
+observer.observe(targetNode, config);
+    });
+})();
