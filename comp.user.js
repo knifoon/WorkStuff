@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         compPro
 // @namespace    https://github.com/knifoon/WorkStuff
-// @version      0.2.1
+// @version      0.3
 // @description  Comp Improvements
 // @author       Ricaarre
 // @match        https://compwebsite-na.amazon.com/mn/comp/packageSearch
@@ -45,15 +45,29 @@ GM_addStyle ( `
 }
 ` );
 (function(){
+    var highlight = function(target,check){
+        if(target.innerHTML != check){
+            target.style.background = '#ff5c7a'
+        }
+    };
 // Wait for page load
     document.addEventListener("DOMContentLoaded", function() {
-const values = {};
 // watch for results
-const targetNode = document.getElementById('shipmentListTableDiv'),
-config = { attributes: true, childList: true, subtree: true },
+const targetNode = document.getElementById('shipmentListTableDiv');
+const config = { attributes: true, childList: true, subtree: true },
 callback = function(mutationsList, observer) {
 // Run after results load
-        console.log('results changed');
+    if(targetNode.querySelector('.tableBody tr')){
+        var col = {
+            station: targetNode.querySelectorAll('.tableBody tr td:nth-child(16)'),
+            route: targetNode.querySelectorAll('.tableBody tr td:nth-child(17)'),
+            shipmentStatus: targetNode.querySelectorAll('.tableBody tr td:nth-child(19)')
+        }
+        console.log(col.station);
+        col.station.forEach(td => highlight(td,'DLA8'));
+        col.route.forEach(td => highlight(td,'&nbsp;'));
+        col.shipmentStatus.forEach(td => highlight(td,'At Station'));
+       }
 };
 const observer = new MutationObserver(callback);
 observer.observe(targetNode, config);
