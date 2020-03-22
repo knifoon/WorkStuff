@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         compPro
 // @namespace    https://github.com/knifoon/WorkStuff
-// @version      0.4
+// @version      0.3
 // @description  Comp Improvements
 // @author       Ricaarre
 // @match        https://compwebsite-na.amazon.com/mn/comp/packageSearch
@@ -14,7 +14,7 @@ GM_addStyle ( `
     .is-it-down-stripe,
     .tableHeaderSort:nth-child(5),
     .tableHeaderSort:nth-child(6),
-    .tableHeaderSort:nth-child(7),
+    .tableHeaderSort:nth-child(4),
     .tableHeaderSort:nth-child(8),
     .tableHeaderSort:nth-child(9),
     .tableHeaderSort:nth-child(10),
@@ -28,7 +28,7 @@ GM_addStyle ( `
     .tableHeaderSort:nth-child(24),
     .tableBody tr td:nth-child(5),
     .tableBody tr td:nth-child(6),
-    .tableBody tr td:nth-child(7),
+    .tableBody tr td:nth-child(4),
     .tableBody tr td:nth-child(8),
     .tableBody tr td:nth-child(9),
     .tableBody tr td:nth-child(10),
