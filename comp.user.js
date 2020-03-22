@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         compPro
 // @namespace    https://github.com/knifoon/WorkStuff
-// @version      0.3
+// @version      0.5
 // @description  Comp Improvements
 // @author       Ricaarre
 // @match        https://compwebsite-na.amazon.com/mn/comp/packageSearch
