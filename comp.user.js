@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         compPro
 // @namespace    https://github.com/knifoon/WorkStuff
-// @version      0.5
+// @version      0.6
 // @description  Comp Improvements
 // @author       Ricaarre
 // @match        https://compwebsite-na.amazon.com/mn/comp/packageSearch
@@ -26,6 +26,8 @@ GM_addStyle ( `
     .tableHeaderSort:nth-child(21),
     .tableHeaderSort:nth-child(22),
     .tableHeaderSort:nth-child(24),
+    .tableHeaderSort:nth-child(25),
+    .tableHeaderSort:nth-child(26),
     .tableBody tr td:nth-child(5),
     .tableBody tr td:nth-child(6),
     .tableBody tr td:nth-child(4),
@@ -39,7 +41,9 @@ GM_addStyle ( `
     .tableBody tr td:nth-child(15),
     .tableBody tr td:nth-child(21),
     .tableBody tr td:nth-child(22),
-    .tableBody tr td:nth-child(24)
+    .tableBody tr td:nth-child(24),
+    .tableBody tr td:nth-child(25),
+    .tableBody tr td:nth-child(26)
 {
       display:none!important;
 }
