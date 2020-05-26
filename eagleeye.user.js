@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         EagleEye widget
 // @namespace    https://github.com/knifoon/WorkStuff
-// @version      0.22
+// @version      0.3
 // @description  Adds eagle eye to fixit
 // @author       ricaarre
 // @match        https://www.amazonlogistics.com/station-op/problemsolve/fixit*
@@ -16,15 +16,17 @@ const config = { attributes: true, childList: false, subtree: true },
 callback = function(mutationsList, observer) {
 // Run after results load
     window.setTimeout(function (){
-        var TBA = "";
-        if(targetNode.querySelector('.detailsBox > div').innerHTML.startsWith('TBA')){
-            TBA = targetNode.querySelector('.detailsBox > div');
+        var details = Array.from(document.getElementsByClassName('detailsBox'));
+        details.forEach((box,index)=>{
+             var TBA = "";
+        if(box.querySelector('div').innerHTML.startsWith('TBA')){
+            TBA = box.querySelector('div');
         } else {
-            TBA = targetNode.querySelector('.detailsBox > div > div')
+            TBA = box.querySelector('div > div')
         }
         var tbaN = TBA.innerHTML;
-        if(!targetNode.querySelector('.detailsBox #eagleEye')){
-            TBA.innerHTML = `${tbaN} </div><div id="eagleEye">Fetching Contents`;
+        if(!box.querySelector('.eagleEye')){
+            TBA.innerHTML = `${tbaN} </div><div class="eagleEye">Fetching Contents`;
         };
         var encb = "idk";
         var getEncrypted = new Promise(function(resolve,reject){
@@ -54,10 +56,11 @@ callback = function(mutationsList, observer) {
               itemCount += parseInt(itemSec[1]);
           });
           console.log(formated);
-             document.getElementById('eagleEye').innerHTML = `Contents (${itemCount}):</br>${formated.join('</br>')}`;
+             box.querySelector('.eagleEye').innerHTML = `Contents (${itemCount}):</br>${formated.join('</br>')}`;
     }})
         }, function(err) {
             console.log(err);
+        });
         });
     },1500)
 };
