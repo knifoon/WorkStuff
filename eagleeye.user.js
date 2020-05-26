@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         EagleEye widget
 // @namespace    https://github.com/knifoon/WorkStuff
-// @version      0.2
+// @version      0.21
 // @description  Adds eagle eye to fixit
 // @author       ricaarre
 // @match        https://www.amazonlogistics.com/station-op/problemsolve/fixit*
@@ -49,7 +49,7 @@ callback = function(mutationsList, observer) {
           let formated = [];
           let itemCount = 0;
           items.forEach((item,index)=>{
-              let itemSec = item.split(',',3);
+              let itemSec = item.split(',',2);
               formated.push(`<b>${itemSec[0]}</b>,${itemSec[1]},${itemSec[2]}`);
               itemCount += parseInt(itemSec[1]);
           });
