@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         EagleEye widget
 // @namespace    https://github.com/knifoon/WorkStuff
-// @version      0.1
+// @version      0.2
 // @description  Adds eagle eye to fixit
 // @author       ricaarre
 // @match        https://www.amazonlogistics.com/station-op/problemsolve/fixit*
@@ -46,8 +46,15 @@ callback = function(mutationsList, observer) {
          onload: function(response) {
           let res = JSON.parse(response.responseText);
           let items = res[Object.keys(res)[0]].items.split(';');
-          console.log(items);
-             document.getElementById('eagleEye').innerHTML = `Contents:</br>${items.join('</br>')}`;
+          let formated = [];
+          let itemCount = 0;
+          items.forEach((item,index)=>{
+              let itemSec = item.split(',',3);
+              formated.push(`<b>${itemSec[0]}</b>,${itemSec[1]},${itemSec[2]}`);
+              itemCount += parseInt(itemSec[1]);
+          });
+          console.log(formated);
+             document.getElementById('eagleEye').innerHTML = `Contents (${itemCount}):</br>${formated.join('</br>')}`;
     }})
         }, function(err) {
             console.log(err);
