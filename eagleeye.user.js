@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         EagleEye widget
 // @namespace    https://github.com/knifoon/WorkStuff
-// @version      0.30
+// @version      0.31
 // @description  Adds eagle eye to fixit
 // @author       ricaarre
 // @match        https://www.amazonlogistics.com/station-op/problemsolve/fixit*
@@ -19,11 +19,12 @@ callback = function(mutationsList, observer) {
         var details = Array.from(document.getElementsByClassName('detailsBox'));
         details.forEach((box,index)=>{
              var TBA = "";
-        if(box.querySelector('div').innerHTML.startsWith('TBA')){
+        if(box.querySelector('div').children.length < 2){
             TBA = box.querySelector('div');
         } else {
-            TBA = box.querySelector('div > div')
-        }
+            TBA = box.querySelector('div').querySelector('div');
+        };
+            console.log(box.children.length);
         var tbaN = TBA.innerHTML;
         if(!box.querySelector('.eagleEye')){
             TBA.innerHTML = `${tbaN} </div><div class="eagleEye">Fetching Contents`;
