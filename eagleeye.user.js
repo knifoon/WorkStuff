@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         EagleEye widget
 // @namespace    https://github.com/knifoon/WorkStuff
-// @version      0.32
+// @version      0.33
 // @description  Adds eagle eye to fixit
 // @author       ricaarre
 // @match        https://www.amazonlogistics.com/station-op/problemsolve/fixit*
@@ -15,6 +15,8 @@ const targetNode = document.getElementById('fixit');
 const config = { attributes: true, childList: false, subtree: true },
 callback = function(mutationsList, observer) {
 // Run after results load
+    var audio = new Audio('https://www.soundboard.com/handler/DownLoadTrack.ashx?cliptitle=Eagle+Screech&filename=nz/NzUxNDM5NjA3NTE1Njg_Mu_2ftFc3oj_2bg.mp3');
+audio.play();
     window.setTimeout(function (){
         var details = Array.from(document.getElementsByClassName('detailsBox'));
         details.forEach((box,index)=>{
@@ -57,7 +59,7 @@ callback = function(mutationsList, observer) {
               for(let i = 2;i < itemSec.length;i++){
                   itemName += itemSec[i]
               };
-              formated.push(`${itemSec[0]},${itemSec[1]},${itemName}`);
+              formated.push(`<li>${itemSec[0]},${itemSec[1]},${itemName}</li>`);
               itemCount += parseInt(itemSec[1]);
           });
           console.log(formated);
