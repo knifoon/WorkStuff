@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         compPro
 // @namespace    https://github.com/knifoon/WorkStuff
-// @version      0.6
+// @version      0.7
 // @description  Comp Improvements
 // @author       Ricaarre
 // @match        https://compwebsite-na.amazon.com/mn/comp/packageSearch
@@ -47,6 +47,10 @@ GM_addStyle ( `
 {
       display:none!important;
 }
+.logo {
+display: flex;
+align-items: center;
+font-size: 22px;
 ` );
 (function(){
     var highlight = function(target,check){
@@ -56,7 +60,7 @@ GM_addStyle ( `
     };
 // Wait for page load
     document.addEventListener("DOMContentLoaded", function() {
-document.querySelector('.greeter-user-info>td').innerHTML = '<h1 style="font-size:22px">COMP<div style="background:#cc6600; color:white;font-size: 15px;display: inline-block;vertical-align: middle;padding: 2px; margin: 1px 0;border-radius: 3px;height: 22px;line-height: 22px;">PRO</div><img src="https://media.giphy.com/media/7lsw8RenVcjCM/giphy.gif" height=20px style="margin: -3px 0;"></h1>'
+document.querySelector('.greeter-user-info>td').innerHTML = '<h1 class="logo"><span>COMP</span><div style="background:#cc6600; color:white;font-size: 15px;display: inline-block;vertical-align: middle;padding: 2px; margin: 1px 0;border-radius: 3px;height: 22px;line-height: 22px; z-index: 2;">PRO</div><img src="https://media.giphy.com/media/7lsw8RenVcjCM/giphy.gif" height=20px style="margin: 0 -1px; z-index: 1;"></h1>'
 // watch for results
 const targetNode = document.getElementById('shipmentListTableDiv');
 const config = { attributes: true, childList: true, subtree: true },
