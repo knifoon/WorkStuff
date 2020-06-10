@@ -1,13 +1,37 @@
 // ==UserScript==
 // @name         EagleEye widget
 // @namespace    https://github.com/knifoon/WorkStuff
-// @version      0.35
+// @version      0.36
 // @description  Adds eagle eye to fixit
 // @author       ricaarre
 // @match        https://www.amazonlogistics.com/station-op/problemsolve/fixit*
 // @grant        GM_xmlhttpRequest
+// @grant        GM_addStyle
 // @run-at   document-start
 // ==/UserScript==
+GM_addStyle (`
+.eagleEye li:first-child {
+border-top: solid 1px #e7e7e7;
+
+}
+.eagleEye li {
+list-style: none;
+display: flex;
+align-items: center;
+padding: 20px;
+border-bottom: solid 1px #e7e7e7;
+}
+.eagleEye .count {
+display: inline-block;
+width: 10%;
+text-align: center;
+font-size: 30px;
+}
+.eagleEye .itemName{
+display: inline-block;
+width: 90%;
+}
+`);
 (function() {
     var screech = new Audio('https://www.soundboard.com/handler/DownLoadTrack.ashx?cliptitle=Eagle+Screech&filename=nz/NzUxNDM5NjA3NTE1Njg_Mu_2ftFc3oj_2bg.mp3');
     document.addEventListener("DOMContentLoaded", function() {
@@ -71,11 +95,11 @@
                                                 for (let i = 2; i < itemSec.length; i++) {
                                                     itemName += itemSec[i]
                                                 };
-                                                formated.push(`<li>${itemSec[0]},${itemSec[1]},${itemName}</li>`);
+                                                formated.push(`<li><div class="count">${itemSec[1]}</div><div class="itemName">${itemSec[0]} , ${itemName}</div></li>`);
                                                 itemCount += parseInt(itemSec[1]);
                                             });
                                             console.log(formated);
-                                            box.querySelector('.eagleEye').innerHTML = `Contents (${itemCount}):</br>${formated.join('</br>')}`;
+                                            box.querySelector('.eagleEye').innerHTML = `Contents (${itemCount}):${formated.join('')}`;
                                         }
                                     })
                                 }, function(err) {
