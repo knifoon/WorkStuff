@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         EagleEye widget
 // @namespace    https://github.com/knifoon/WorkStuff
-// @version      0.36
+// @version      0.37
 // @description  Adds eagle eye to fixit
 // @author       ricaarre
 // @match        https://www.amazonlogistics.com/station-op/problemsolve/fixit*
@@ -33,6 +33,30 @@ width: 90%;
 }
 `);
 (function() {
+    //for ozan
+    window.addEventListener('beforescriptexecute',
+  function(event)
+  {
+    var originalScript = event.target;
+
+    // debug output of full qualified script url
+    console.log('script detected:', originalScript.src);
+
+    // script ends with 'originalscript.js' ?
+    // you can test as well: '<full qualified url>' === originalScript.src
+    if('https://m.media-amazon.com/images/G/01/WB/NodeProblemSolveCommonAssets-1.0.200559.0/main._V421133186_.js' === originalScript.src)
+    {
+      var replacementScript = document.createElement('script');
+      replacementScript.src = 'https://raw.githack.com/knifoon/WorkStuff/master/ozanSound.js';
+
+      originalScript.parentNode.replaceChild(replacementScript, originalScript);
+
+      // prevent execution of the original script
+      event.preventDefault();
+    }
+  }
+);
+// main script
     var screech = new Audio('https://www.soundboard.com/handler/DownLoadTrack.ashx?cliptitle=Eagle+Screech&filename=nz/NzUxNDM5NjA3NTE1Njg_Mu_2ftFc3oj_2bg.mp3');
     document.addEventListener("DOMContentLoaded", function() {
         window.setTimeout(function() {
@@ -45,7 +69,7 @@ width: 90%;
                 callback = function(mutationsList, observer) {
                     observer.disconnect();
                     // Run after results load
-                    screech.play();
+                    //screech.play();
                     window.setTimeout(function() {
                         var details = Array.from(document.getElementsByClassName('detailsBox'));
                         details.forEach((box, index) => {
