@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         EagleEye widget
 // @namespace    https://github.com/knifoon/WorkStuff
-// @version      0.37
+// @version      0.38
 // @description  Adds eagle eye to fixit
 // @author       ricaarre
 // @match        https://www.amazonlogistics.com/station-op/problemsolve/fixit*
@@ -38,18 +38,27 @@ width: 90%;
   function(event)
   {
     var originalScript = event.target;
-
-    // debug output of full qualified script url
-    console.log('script detected:', originalScript.src);
+            function addScript(text) {
+    text = text.replace(/https:\/\/m.media-amazon.com\/images\/G\/01\/ReturnToStation\/success._V518618767_.mp3/, "https://www.soundboard.com/handler/DownLoadTrack.ashx?cliptitle=Eagle+Screech&filename=nz/NzUxNDM5NjA3NTE1Njg_Mu_2ftFc3oj_2bg.mp3");
+    text = text.replace(/https:\/\/m.media-amazon.com\/images\/G\/01\/ReturnToStation\/error2._CB505344122_.mp3/,"https://www.myinstants.com/media/sounds/damn-son-whered-you-find-this_2.mp3");
+    var replacementScript = document.createElement('script');
+        replacementScript.type = "text/javascript";
+        replacementScript.id = "knif";
+        replacementScript.textContent = text;
+        originalScript.parentNode.replaceChild(replacementScript, originalScript);
+}
 
     // script ends with 'originalscript.js' ?
     // you can test as well: '<full qualified url>' === originalScript.src
     if('https://m.media-amazon.com/images/G/01/WB/NodeProblemSolveCommonAssets-1.0.200559.0/main._V421133186_.js' === originalScript.src)
     {
-      var replacementScript = document.createElement('script');
-      replacementScript.src = 'https://raw.githack.com/knifoon/WorkStuff/master/ozanSound.js';
-
-      originalScript.parentNode.replaceChild(replacementScript, originalScript);
+       GM_xmlhttpRequest({
+            method: "GET",
+            url: 'https://m.media-amazon.com/images/G/01/WB/NodeProblemSolveCommonAssets-1.0.200559.0/main._V421133186_.js',
+            onload: function(response) {
+                addScript(response.responseText);
+            }
+        });
 
       // prevent execution of the original script
       event.preventDefault();
@@ -57,7 +66,6 @@ width: 90%;
   }
 );
 // main script
-    var screech = new Audio('https://www.soundboard.com/handler/DownLoadTrack.ashx?cliptitle=Eagle+Screech&filename=nz/NzUxNDM5NjA3NTE1Njg_Mu_2ftFc3oj_2bg.mp3');
     document.addEventListener("DOMContentLoaded", function() {
         window.setTimeout(function() {
             const targetNode = document.getElementById('fixit');
