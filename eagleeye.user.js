@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         EagleEye widget
 // @namespace    https://github.com/knifoon/WorkStuff
-// @version      0.38
+// @version      0.39
 // @description  Adds eagle eye to fixit
 // @author       ricaarre
 // @match        https://www.amazonlogistics.com/station-op/problemsolve/fixit*
@@ -50,11 +50,11 @@ width: 90%;
 
     // script ends with 'originalscript.js' ?
     // you can test as well: '<full qualified url>' === originalScript.src
-    if('https://m.media-amazon.com/images/G/01/WB/NodeProblemSolveCommonAssets-1.0.200559.0/main._V421133186_.js' === originalScript.src)
+    if(/NodeProblemSolve/.test(originalScript.src))
     {
        GM_xmlhttpRequest({
             method: "GET",
-            url: 'https://m.media-amazon.com/images/G/01/WB/NodeProblemSolveCommonAssets-1.0.200559.0/main._V421133186_.js',
+            url: event.target.src ,
             onload: function(response) {
                 addScript(response.responseText);
             }
