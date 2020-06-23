@@ -83,9 +83,8 @@ width: 90%;
                                 var package = {};
                             if (box.querySelector('div').innerHTML.startsWith('TBA')) {
                                 TBA = box.querySelector('div');
-                                package.TBA = box.querySelectorAll('div')[0];
                             } else {
-                                TBA = parent.querySelector('div');
+                                TBA = box.querySelector('div').querySelector('div');
                             };
                                 let parent = TBA.parentNode;
                                 package.TBA       = parent.querySelectorAll('div')[0].innerHTML;
@@ -129,6 +128,7 @@ width: 90%;
                                         },
                                         onload: function(response) {
                                             let res = JSON.parse(response.responseText);
+                                            // To Do if ; not followed by itemSerial replace with empty space
                                             let items = res[Object.keys(res)[0]].items.split(';');
                                             let formated = [];
                                             let itemCount = 0;
