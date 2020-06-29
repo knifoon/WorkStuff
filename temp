@@ -10,25 +10,25 @@
 // @run-at   document-start
 // ==/UserScript==
 GM_addStyle(`
-  .eagleEye li: first - child {
-    border - top: solid 1 px #e7e7e7;
+  .eagleEye li: first-child {
+    border-top: solid 1px #e7e7e7;
   }
   .eagleEye li {
-    list - style: none;
+    list-style: none;
     display: flex;
-    align - items: center;
-    padding: 20 px;
-    border - bottom: solid 1 px #e7e7e7;
+    align-items: center;
+    padding: 20px;
+    border-bottom: solid 1px #e7e7e7;
   }
-  .eagleEye.count {
-    display: inline - block;
-    width: 10 % ;
-    text - align: center;
-    font - size: 30 px;
+  .eagleEye .count {
+    display: inline-block;
+    width: 10%;
+    text-align: center;
+    font-size: 30px;
   }
-  .eagleEye.itemName {
-    display: inline - block;
-    width: 90 % ;
+  .eagleEye .itemName {
+    display: inline-block;
+    width: 90% ;
   }
 `);
 (function() {
@@ -82,47 +82,51 @@ GM_addStyle(`
                 if (box.querySelector('div').innerHTML.startsWith('TBA')) {
                   TBA = box.querySelector('div');
                   info.layout = 'default';
-                } else {
+                } else{
                   TBA = box.querySelector('div').querySelector('div');
-                  info.layout = 'stowDamaged'
+                  if(/Wrong/.test(TBA.parentNode.children[1].innerHTML)){
+                   info.layout = 'wrongStation';
+                  } else {
+                  info.layout = 'stowDamaged';
+                  }
                 };
                 var parent = TBA.parentNode;
                 // get info based on layout
-                info['default'] = () => {
-                  package.TBA = parent.querySelectorAll('div')[0].innerHTML;
-                  package.driver = parent.querySelectorAll('div')[1].innerHTML;
-                  package.route = parent.querySelectorAll('div')[2].innerHTML;
-                  package.addType = parent.querySelectorAll('div')[3].innerHTML;
-                  package.status = parent.querySelectorAll('div')[4].innerHTML;
-                  package.sortZone = parent.querySelectorAll('div')[5].innerHTML;
-                  package.cycle = parent.querySelectorAll('div')[6].innerHTML;
-                  package.EAD = parent.querySelectorAll('div')[7].innerHTML;
-                  package.location = parent.querySelectorAll('div')[8].innerHTML;
-                  package.timestamp = parent.querySelectorAll('div')[9].innerHTML;
+                info.default = () => {
+                  package.TBA = parent.children[0].innerHTML;
+                  package.driver = parent.children[1].innerHTML;
+                  package.route = parent.children[2].innerHTML;
+                  package.addType = parent.children[3].innerHTML;
+                  package.status = parent.children[4].innerHTML;
+                  package.sortZone = parent.children[5].innerHTML;
+                  package.cycle = parent.children[6].innerHTML;
+                  package.EAD = parent.children[7].innerHTML;
+                  package.location = parent.children[8].innerHTML;
+                  package.timestamp = parent.children[9].innerHTML;
                 };
-                info['stowDamaged'] = () => {
-                  package.TBA = parent.querySelectorAll('div')[0].innerHTML;
-                  package.probCat = parent.querySelectorAll('div')[1].innerHTML;
-                  package.driver = parent.querySelectorAll('div')[2].innerHTML;
-                  package.route = parent.querySelectorAll('div')[3].innerHTML;
-                  package.operator = parent.querySelectorAll('div')[4].innerHTML;
-                  package.status = parent.querySelectorAll('div')[5].innerHTML;
-                  package.addType = parent.querySelectorAll('div')[6].innerHTML;
-                  package.sortZone = parent.querySelectorAll('div')[7].innerHTML;
-                  package.cycle = parent.querySelectorAll('div')[8].innerHTML;
-                  package.EAD = parent.querySelectorAll('div')[9].innerHTML;
-                  package.location = parent.querySelectorAll('div')[10].innerHTML;
-                  package.timestamp = parent.querySelectorAll('div')[11].innerHTML;
+                info.stowDamaged = () => {
+                  package.TBA = parent.children[0].innerHTML;
+                  package.probCat = parent.children[1].innerHTML;
+                  package.driver = parent.children[2].innerHTML;
+                  package.route = parent.children[3].innerHTML;
+                  package.operator = parent.children[4].innerHTML;
+                  package.status = parent.children[5].innerHTML;
+                  package.addType = parent.children[6].innerHTML;
+                  package.sortZone = parent.children[7].innerHTML;
+                  package.cycle = parent.children[8].innerHTML;
+                  package.EAD = parent.children[9].innerHTML;
+                  package.location = parent.children[10].innerHTML;
+                  package.timestamp = parent.children[11].innerHTML;
                 };
-                info['wrongStation'] = () => {
-                  package.TBA = parent.querySelectorAll('div')[0].innerHTML;
-                  package.probCat = parent.querySelectorAll('div')[1].innerHTML;
-                  package.status = parent.querySelectorAll('div')[2].innerHTML;
-                  package.addType = parent.querySelectorAll('div')[3].innerHTML;
-                  package.EAD = parent.querySelectorAll('div')[4].innerHTML;
-                  package.currentStation = parent.querySelectorAll('div')[5].innerHTML;
-                  package.correctStation = parent.querySelectorAll('div')[6].innerHTML;
-                  package.timestamp = parent.querySelectorAll('div')[7].innerHTML;
+                info.wrongStation = () => {
+                  package.TBA = parent.children[0].innerHTML;
+                  package.probCat = parent.children[1].innerHTML;
+                  package.status = parent.children[2].innerHTML;
+                  package.addType = parent.children[3].innerHTML;
+                  package.EAD = parent.children[4].innerHTML;
+                  package.currentStation = parent.children[5].innerHTML;
+                  package.correctStation = parent.children[6].innerHTML;
+                  package.timestamp = parent.children[8].innerHTML;
                 };
                 info[info.layout]();
                 console.log(package);
