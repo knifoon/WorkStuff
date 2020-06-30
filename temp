@@ -90,33 +90,45 @@ GM_addStyle(`
                   info.layout = 'stowDamaged';
                   }
                 };
+                var tbaN = TBA.innerHTML;
                 var parent = TBA.parentNode;
                 // get info based on layout
+                var trim =(el,start) => el.innerHTML.slice(start);
                 info.default = () => {
-                  package.TBA = parent.children[0].innerHTML;
-                  package.driver = parent.children[1].innerHTML;
-                  package.route = parent.children[2].innerHTML;
-                  package.addType = parent.children[3].innerHTML;
-                  package.status = parent.children[4].innerHTML;
-                  package.sortZone = parent.children[5].innerHTML;
-                  package.cycle = parent.children[6].innerHTML;
-                  package.EAD = parent.children[7].innerHTML;
-                  package.location = parent.children[8].innerHTML;
-                  package.timestamp = parent.children[9].innerHTML;
+                  package.TBA = parent.children[0];
+                  package.driver = parent.children[1];
+                  package.route = parent.children[2];
+                  package.addType = parent.children[3];
+                  package.status = parent.children[4];
+                  package.sortZone = parent.children[5];
+                  package.cycle = parent.children[6];
+                  package.EAD = parent.children[7];
+                  package.location = parent.children[8];
+                  package.timestamp = parent.children[9];
+                  var newInfo = {};
+                  // remove original
+                    Object.keys(package).forEach(function (item){
+                      newInfo[item] = package[item].innerHTML;
+                      package[item].remove();
+                  })
+                  parent.innerHTML = `
+<div>${newInfo.TBA}</div>
+<div>${newInfo.status}</div>
+<div class="eagleEye">Fetching Contents</div> ${parent.innerHTML}`
                 };
                 info.stowDamaged = () => {
                   package.TBA = parent.children[0].innerHTML;
-                  package.probCat = parent.children[1].innerHTML;
-                  package.driver = parent.children[2].innerHTML;
-                  package.route = parent.children[3].innerHTML;
-                  package.operator = parent.children[4].innerHTML;
-                  package.status = parent.children[5].innerHTML;
-                  package.addType = parent.children[6].innerHTML;
-                  package.sortZone = parent.children[7].innerHTML;
-                  package.cycle = parent.children[8].innerHTML;
-                  package.EAD = parent.children[9].innerHTML;
-                  package.location = parent.children[10].innerHTML;
-                  package.timestamp = parent.children[11].innerHTML;
+                  package.probCat = parent.children[2].innerHTML.slice(25);
+                  package.driver = parent.children[3].innerHTML.slice(9);
+                  package.route = parent.children[4].innerHTML.slice(7);
+                  package.operator = parent.children[5].innerHTML.slice(12);
+                  package.status = parent.children[6].innerHTML.slice(17);
+                  package.addType = parent.children[7].innerHTML.slice(13);
+                  package.sortZone = parent.children[8].innerHTML.slice(11);
+                  package.cycle = parent.children[9].innerHTML.slice(5);
+                  package.EAD = parent.children[10].innerHTML.slice(5);
+                  package.location = parent.children[11].innerHTML.slice(10);
+                  package.timestamp = parent.children[13].innerHTML.slice(11);
                 };
                 info.wrongStation = () => {
                   package.TBA = parent.children[0].innerHTML;
@@ -130,7 +142,6 @@ GM_addStyle(`
                 };
                 info[info.layout]();
                 console.log(package);
-                var tbaN = TBA.innerHTML;
                 TBA.innerHTML = `${tbaN} </div><div class="eagleEye">Fetching Contents`;
                 var encb = "idk";
                 var getEncrypted = new Promise(function(resolve, reject) {
@@ -182,7 +193,7 @@ GM_addStyle(`
                 });
               };
             });
-          }, 1500)
+          }, 0)
           observer.observe(targetNode, config)
         };
       const observer = new MutationObserver(callback);
@@ -190,6 +201,6 @@ GM_addStyle(`
 
 
 
-    }, 500);
+    }, 0);
   })
 })();
