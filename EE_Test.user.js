@@ -1,5 +1,5 @@
 // ==UserScript==
-// @name         EagleEye widget
+// @name         EagleEye widget(test)
 // @namespace    https://github.com/knifoon/WorkStuff
 // @version      0.40
 // @description  Adds eagle eye to fixit
