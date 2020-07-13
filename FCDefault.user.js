@@ -1,10 +1,11 @@
 // ==UserScript==
 // @name         FC Label Default
 // @namespace    https://github.com/knifoon/WorkStuff
-// @version      0.1
+// @version      0.2
 // @description  PrintLabel off by default
 // @author       ricarre
 // @match        https://compwebsite-na.amazon.com/comp/packageScan*
+// @match        https://compwebsite-na.amazon.com/mn/comp/packageScan*
 // @grant        none
 // ==/UserScript==
 
