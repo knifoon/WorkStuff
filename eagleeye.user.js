@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         EagleEye widget
 // @namespace    https://github.com/knifoon/WorkStuff
-// @version      0.40
+// @version      0.50
 // @description  Adds eagle eye to fixit
 // @author       ricaarre
 // @match        https://www.amazonlogistics.com/station-op/problemsolve/fixit*
@@ -118,17 +118,18 @@ width: 90%;
                                         },
                                         onload: function(response) {
                                             let res = JSON.parse(response.responseText);
-                                            let items = res[Object.keys(res)[0]].items.split(';');
+                                            let re = new RegExp(/(\S{10}),\s(\d),((?:.|\n)*?)(?=\S{10},\s\d,)/g);
+                                            let items1 = res[Object.keys(res)[0]].items + 'knifoonftw, 1,';
+                                            let items = Array.from(items1.matchAll(re));
                                             let formated = [];
                                             let itemCount = 0;
+                                            console.log(items);
                                             items.forEach((item, index) => {
-                                                let itemSec = item.split(',');
-                                                let itemName = "";
-                                                for (let i = 2; i < itemSec.length; i++) {
-                                                    itemName += itemSec[i]
-                                                };
-                                                formated.push(`<li><div class="count">${itemSec[1]}</div><div class="itemName">${itemSec[0]} , ${itemName}</div></li>`);
-                                                itemCount += parseInt(itemSec[1]);
+                                                let prodId = item[1];
+                                                let count = item[2];
+                                                let itemName = item[3];
+                                                formated.push(`<li><div class="count">${count}</div><div class="itemName">${prodId} , ${itemName.replace(';','\n')}</div></li>`);
+                                                itemCount += parseInt(count);
                                             });
                                             console.log(formated);
                                             box.querySelector('.eagleEye').innerHTML = `Contents (${itemCount}):${formated.join('')}`;
