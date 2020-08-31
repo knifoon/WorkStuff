@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         EagleEye widget
 // @namespace    https://github.com/knifoon/WorkStuff
-// @version      0.50
+// @version      0.51
 // @description  Adds eagle eye to fixit
 // @author       ricaarre
 // @match        https://www.amazonlogistics.com/station-op/problemsolve/fixit*
@@ -118,7 +118,7 @@ width: 90%;
                                         },
                                         onload: function(response) {
                                             let res = JSON.parse(response.responseText);
-                                            let re = new RegExp(/(\S{10}),\s(\d),((?:.|\n)*?)(?=\S{10},\s\d,)/g);
+                                            let re = new RegExp(/(\S{10}),\s(\d+),((?:.|\n)*?)(?=\S{10},\s\d+,)/g);
                                             let items1 = res[Object.keys(res)[0]].items + 'knifoonftw, 1,';
                                             let items = Array.from(items1.matchAll(re));
                                             let formated = [];
