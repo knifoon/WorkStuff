@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         ScanRates Script
 // @namespace    http://tampermonkey.net/
-// @version      0.1
+// @version      0.2
 // @description  improvements
 // @author       ricaarre
 // @match        https://fclm-portal.amazon.com/ppa/inspect/*
@@ -42,11 +42,11 @@ var link = function(day,start,end){
     return `https://fclm-portal.amazon.com/ppa/inspect/process?primaryAttribute=CONTAINER_TYPE&secondaryAttribute=CONTAINER_TYPE&nodeType=DS&warehouseId=DLA8&processId=100021&startDateDay=2019%2F05%2F15&startDateWeek=2020%2F01%2F14&startDateMonth=2020%2F01%2F01&maxIntradayDays=1&spanType=Intraday&startDateIntraday=${day[0]}&startHourIntraday=${start[0]}&startMinuteIntraday=${start[1]}&endDateIntraday=${day[1]}&endHourIntraday=${end[0]}&endMinuteIntraday=${end[1]}`
 };
 var time = {
-   q1:{start:[18,30],end:[20,0]},
-   q2:{start:[20,30],end:[23,15]},
-   q3:{start:[23,45],end:[2,0]},
-   q4:{start:[2,30],end:[4,0]},
-   overall:{start:[18,30],end:[4,0]}
+   q1:{start:[18,15],end:[20,30]},
+   q2:{start:[20,45],end:[23,0]},
+   q3:{start:[23,30],end:[2,0]},
+   q4:{start:[2,15],end:[4,45]},
+   overall:{start:[18,15],end:[4,45]}
 };
 var curUrl= window.location.href;
 var active = function(url){
