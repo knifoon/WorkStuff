@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         EagleEye 2.0
 // @namespace    http://tampermonkey.net/
-// @version      0.1
+// @version      0.2
 // @description  try to take over the world!
 // @author       You
 // @match        https://knifoon.github.io/eagleeye/
@@ -22,11 +22,60 @@
                     //Main Script
                 var list = Array.from(document.querySelectorAll('#list li'));
                     list.forEach((package, index) => {
-                        var TBA = package.getElementsByTagName('h3')[0].innerHTML;
-                        if(package.getElementsByClassName('pkgdetails').innerHTML = "test"){
-                           package.getElementsByClassName('pkgdetails').innerHTML = "nope";
-                           console.log(TBA);
-                           };
+                        let TBA = package.getElementsByTagName('h3')[0];
+                        let pkgDetails = package.getElementsByClassName('pkgdetails')[0];
+                        if(!pkgDetails.classList.contains('complete')){
+                            var tbaN = TBA.innerHTML;
+                            var getEncrypted = new Promise(function(resolve, reject) {
+                                    GM_xmlhttpRequest({
+                                        method: "GET",
+                                        url: "https://eagleeye-na.amazon.com/pkglegdetail/" + tbaN,
+                                        headers: {
+                                            'Content-type': 'application/json'
+                                        },
+                                        onload: function(response) {
+                                            let res = JSON.parse(response.responseText);
+                                            let enc = res[Object.keys(res)[0]][0].scannable;
+                                            if (enc) {
+                                                resolve(enc)
+                                            } else {
+                                                reject(Error('fail'))
+                                            };
+                                        }
+                                    })
+                                })
+                                getEncrypted.then(function(result) {
+                                    GM_xmlhttpRequest({
+                                        method: "GET",
+                                        url: "https://eagleeye-na.amazon.com/itemdetails/" + result,
+                                        headers: {
+                                            'Content-type': 'application/json'
+                                        },
+                                        onload: function(response) {
+                                            let res = JSON.parse(response.responseText);
+                                            let re = new RegExp(/(\S{10}),\s(\d+),((?:.|\n)*?)(?=\S{10},\s\d+,)/g);
+                                            let items1 = res[Object.keys(res)[0]].items + 'knifoonftw, 1,';
+                                            let items = Array.from(items1.matchAll(re));
+                                            let formated = [];
+                                            let itemCount = 0;
+                                            console.log(items);
+                                            items.forEach((item, index) => {
+                                                let prodId = item[1];
+                                                let count = item[2];
+                                                let itemName = item[3];
+                                                formated.push(`<li><div class="count">${count}</div><div class="itemName">${prodId} , ${itemName.replace(';','\n')}</div></li>`);
+                                                itemCount += parseInt(count);
+                                            });
+                                            console.log(formated);
+                                            pkgDetails.innerHTML = `Contents (${itemCount}):${formated.join('')}`;
+                                            pkgDetails.classList.add(`complete`);
+                                        }
+                                    })
+                                }, function(err) {
+                                    console.log(err);
+                                });
+                        }
+                        //package.getElementsByClassName('pkgdetails')[0].innerHTML = `TBA = ${TBA}`;
                     })
                     }, 0);
                 };
