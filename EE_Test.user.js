@@ -1,14 +1,36 @@
 // ==UserScript==
 // @name         EagleEye 2.0
-// @namespace    http://tampermonkey.net/
-// @version      0.2
+// @namespace    https://github.com/knifoon/WorkStuff
+// @version      1.0
 // @description  try to take over the world!
 // @author       You
 // @match        https://knifoon.github.io/eagleeye/
 // @grant        GM_xmlhttpRequest
 // @grant        GM_addStyle
 // ==/UserScript==
+GM_addStyle (`
+.eagleEye li:first-child {
+border-top: solid 1px #e7e7e7;
 
+}
+.pkgdetails li {
+list-style: none;
+display: flex;
+align-items: center;
+padding: 20px;
+border-bottom: solid 1px #e7e7e7;
+}
+.pkgdetails .count {
+display: inline-block;
+width: 10%;
+text-align: center;
+font-size: 30px;
+}
+.pkgdetails .itemName{
+display: inline-block;
+width: 90%;
+}
+`);
 (function() {
     console.log('loaded');
         const targetNode = document.getElementById('list');
@@ -18,14 +40,17 @@
                     subtree: true
                 },
                 callback = function(mutationsList, observer) {
+                    observer.disconnect();
                     window.setTimeout(function() {
                     //Main Script
-                var list = Array.from(document.querySelectorAll('#list li'));
+                var list = Array.from(document.querySelectorAll('#list>li'));
                     list.forEach((package, index) => {
                         let TBA = package.getElementsByTagName('h3')[0];
-                        let pkgDetails = package.getElementsByClassName('pkgdetails')[0];
-                        if(!pkgDetails.classList.contains('complete')){
+                        let pkgDetails = package.querySelector('div');
+                        if(pkgDetails.getAttribute('tba') != TBA.innerHTML){
                             var tbaN = TBA.innerHTML;
+                            pkgDetails.setAttribute('tba',tbaN);
+                            pkgDetails.innerHTML = `Fetching Contents`;
                             var getEncrypted = new Promise(function(resolve, reject) {
                                     GM_xmlhttpRequest({
                                         method: "GET",
@@ -66,9 +91,8 @@
                                                 formated.push(`<li><div class="count">${count}</div><div class="itemName">${prodId} , ${itemName.replace(';','\n')}</div></li>`);
                                                 itemCount += parseInt(count);
                                             });
-                                            console.log(formated);
+                                            console.log('ran eagleeye');
                                             pkgDetails.innerHTML = `Contents (${itemCount}):${formated.join('')}`;
-                                            pkgDetails.classList.add(`complete`);
                                         }
                                     })
                                 }, function(err) {
@@ -78,6 +102,7 @@
                         //package.getElementsByClassName('pkgdetails')[0].innerHTML = `TBA = ${TBA}`;
                     })
                     }, 0);
+                    observer.observe(targetNode, config)
                 };
         const observer = new MutationObserver(callback);
         observer.observe(targetNode, config);
