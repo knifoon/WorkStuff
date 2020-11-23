@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         EagleEye 2.0
 // @namespace    https://github.com/knifoon/WorkStuff
-// @version      1.0
+// @version      1.1
 // @description  try to take over the world!
 // @author       You
 // @match        https://knifoon.github.io/eagleeye/
@@ -60,7 +60,12 @@ width: 90%;
                                         },
                                         onload: function(response) {
                                             let res = JSON.parse(response.responseText);
-                                            let enc = res[Object.keys(res)[0]][0].scannable;
+                                            let enc;
+                                            if(Array.isArray(res[Object.keys(res)[0]])){
+                                              enc = res[Object.keys(res)[0]][0].scannable;
+                                            } else {
+                                                enc = tbaN;
+                                            }
                                             if (enc) {
                                                 resolve(enc)
                                             } else {
