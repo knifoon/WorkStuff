@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         EagleEye 2.0
 // @namespace    https://github.com/knifoon/WorkStuff
-// @version      1.3
+// @version      1.4
 // @description  Better EagleEye
 // @author       ricaarre
 // @match        https://knifoon.github.io/eagleeye/
@@ -30,7 +30,7 @@ font-size: 30px;
 display: inline-block;
 width: 90%;
 }
-.compstatus {
+.meta {
 font-size: 12px;
 }
 `);
@@ -63,10 +63,11 @@ font-size: 12px;
                                         },
                                         onload: function(response) {
                                             let res = JSON.parse(response.responseText);
-                                            console.log(res[0].package.label)
+                                            console.log(res[0].package)
                                             let enc = [res[0].package.label];
                                             package.getElementsByTagName('h3')[0].innerHTML = res[0].package.trackingId;
                                             enc.push(res[0].package.details[res[0].package.details.length - 1].leg.compStatus)
+                                            enc.push({warehouse:res[0].package.details[0].leg.nodeId,id:res[0].package.orderingShipmentId})
                                             if (enc) {
                                                 resolve(enc)
                                             } else {
@@ -98,7 +99,7 @@ font-size: 12px;
                                                 itemCount += parseInt(count);
                                             });
                                             console.log('ran eagleeye');
-                                            pkgDetails.innerHTML = `<span class="compstatus">${result[1]}</span></br>Contents (${itemCount}):${formated.join('')}`;
+                                            pkgDetails.innerHTML = `<span class="meta">${result[1]} | <a href="https://fc-hitch.iad.proxy.amazon.com/gp/fc-application-services/hitch-report/shipment-display.html?warehouseId=${result[2].warehouse}&shipmentId=${result[2].id}" target="_blank">Hitch</a></span></br>Contents (${itemCount}):${formated.join('')}`;
                                         }
                                     })
                                 }, function(err) {
