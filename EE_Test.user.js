@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         EagleEye 2.0
 // @namespace    https://github.com/knifoon/WorkStuff
-// @version      1.2
+// @version      1.3
 // @description  Better EagleEye
 // @author       ricaarre
 // @match        https://knifoon.github.io/eagleeye/
@@ -29,6 +29,9 @@ font-size: 30px;
 .pkgdetails .itemName{
 display: inline-block;
 width: 90%;
+}
+.compstatus {
+font-size: 12px;
 }
 `);
 (function() {
@@ -61,8 +64,9 @@ width: 90%;
                                         onload: function(response) {
                                             let res = JSON.parse(response.responseText);
                                             console.log(res[0].package.label)
-                                            let enc = res[0].package.label;
+                                            let enc = [res[0].package.label];
                                             package.getElementsByTagName('h3')[0].innerHTML = res[0].package.trackingId;
+                                            enc.push(res[0].package.details[res[0].package.details.length - 1].leg.compStatus)
                                             if (enc) {
                                                 resolve(enc)
                                             } else {
@@ -74,7 +78,7 @@ width: 90%;
                                 getEncrypted.then(function(result) {
                                     GM_xmlhttpRequest({
                                         method: "GET",
-                                        url: "https://eagleeye-na.amazon.com/itemdetails/" + result,
+                                        url: "https://eagleeye-na.amazon.com/itemdetails/" + result[0],
                                         headers: {
                                             'Content-type': 'application/json'
                                         },
@@ -94,7 +98,7 @@ width: 90%;
                                                 itemCount += parseInt(count);
                                             });
                                             console.log('ran eagleeye');
-                                            pkgDetails.innerHTML = `Contents (${itemCount}):${formated.join('')}`;
+                                            pkgDetails.innerHTML = `<span class="compstatus">${result[1]}</span></br>Contents (${itemCount}):${formated.join('')}`;
                                         }
                                     })
                                 }, function(err) {
