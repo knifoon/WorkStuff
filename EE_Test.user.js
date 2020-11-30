@@ -1,9 +1,9 @@
 // ==UserScript==
 // @name         EagleEye 2.0
 // @namespace    https://github.com/knifoon/WorkStuff
-// @version      1.1
-// @description  try to take over the world!
-// @author       You
+// @version      1.2
+// @description  Better EagleEye
+// @author       ricaarre
 // @match        https://knifoon.github.io/eagleeye/
 // @grant        GM_xmlhttpRequest
 // @grant        GM_addStyle
@@ -54,18 +54,15 @@ width: 90%;
                             var getEncrypted = new Promise(function(resolve, reject) {
                                     GM_xmlhttpRequest({
                                         method: "GET",
-                                        url: "https://eagleeye-na.amazon.com/pkglegdetail/" + tbaN,
+                                        url: "https://eagleeye-na.amazon.com/scanable/" + tbaN,
                                         headers: {
                                             'Content-type': 'application/json'
                                         },
                                         onload: function(response) {
                                             let res = JSON.parse(response.responseText);
-                                            let enc;
-                                            if(Array.isArray(res[Object.keys(res)[0]])){
-                                              enc = res[Object.keys(res)[0]][0].scannable;
-                                            } else {
-                                                enc = tbaN;
-                                            }
+                                            console.log(res[0].package.label)
+                                            let enc = res[0].package.label;
+                                            package.getElementsByTagName('h3')[0].innerHTML = res[0].package.trackingId;
                                             if (enc) {
                                                 resolve(enc)
                                             } else {
