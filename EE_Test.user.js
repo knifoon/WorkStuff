@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         EagleEye 2.0
 // @namespace    https://github.com/knifoon/WorkStuff
-// @version      1.4
+// @version      1.5
 // @description  Better EagleEye
 // @author       ricaarre
 // @match        https://knifoon.github.io/eagleeye/
@@ -63,11 +63,12 @@ font-size: 12px;
                                         },
                                         onload: function(response) {
                                             let res = JSON.parse(response.responseText);
-                                            console.log(res[0].package)
                                             let enc = [res[0].package.label];
                                             package.getElementsByTagName('h3')[0].innerHTML = res[0].package.trackingId;
                                             enc.push(res[0].package.details[res[0].package.details.length - 1].leg.compStatus)
+                                            enc.push(res[0].package.details[res[0].package.details.length - 1].leg.compShipmentId)
                                             enc.push({warehouse:res[0].package.details[0].leg.nodeId,id:res[0].package.orderingShipmentId})
+                                            console.log(enc[2])
                                             if (enc) {
                                                 resolve(enc)
                                             } else {
@@ -95,11 +96,10 @@ font-size: 12px;
                                                 let prodId = item[1];
                                                 let count = item[2];
                                                 let itemName = item[3];
-                                                formated.push(`<li><div class="count">${count}</div><div class="itemName">${prodId} , ${itemName.replace(';','\n')}</div></li>`);
+                                                formated.push(`<li><div class="count">${count}</div><div class="itemName"><a href="https://www.amazon.com/dp/${prodId}" target="_blank">${prodId}</a> , ${itemName.replace(';','\n')}</div></li>`);
                                                 itemCount += parseInt(count);
                                             });
-                                            console.log('ran eagleeye');
-                                            pkgDetails.innerHTML = `<span class="meta">${result[1]} | <a href="https://fc-hitch.iad.proxy.amazon.com/gp/fc-application-services/hitch-report/shipment-display.html?warehouseId=${result[2].warehouse}&shipmentId=${result[2].id}" target="_blank">Hitch</a></span></br>Contents (${itemCount}):${formated.join('')}`;
+                                            pkgDetails.innerHTML = `<span class="meta"><a href="https://compwebsite-na.amazon.com/comp/shipmentDetail?id=${result[2]}&shipmentType=Delivery" target="_blank">${result[1]}</a> | <a href="https://fc-hitch.iad.proxy.amazon.com/gp/fc-application-services/hitch-report/shipment-display.html?warehouseId=${result[3].warehouse}&shipmentId=${result[3].id}" target="_blank">Hitch</a></span></br>Contents (${itemCount}):${formated.join('')}`;
                                         }
                                     })
                                 }, function(err) {
