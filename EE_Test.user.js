@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         EagleEye 2.0
 // @namespace    https://github.com/knifoon/WorkStuff
-// @version      1.7
+// @version      1.71
 // @description  Better EagleEye
 // @author       ricaarre
 // @match        https://knifoon.github.io/eagleeye/
@@ -135,11 +135,11 @@ font-size: 12px;
                                             pkgDetails.innerHTML = `<span class="meta"><a href="https://fc-hitch.iad.proxy.amazon.com/gp/fc-application-services/hitch-report/shipment-display.html?warehouseId=${result[3].warehouse}&shipmentId=${result[3].id}" target="_blank">Hitch</a></span></br>Contents (${itemCount}):${formated.join('')}`;
                                             if(package.getElementsByClassName('status').length > 1)package.getElementsByClassName('status')[1].remove();
                                             package.getElementsByClassName('status')[0].innerHTML = `<a href="https://compwebsite-na.amazon.com/comp/shipmentDetail?id=${result[2]}&shipmentType=Delivery" target="_blank"><div>${result[1]}</div></a>`;
-                                            if (result[1].includes('FC')){
+                                            if (result[1].includes('READY_FOR_FC_RETURN')){
                                                 package.getElementsByClassName('status')[0].classList.add('red')
                                             } else if (result[1].includes('AT_STATION')){
                                              package.getElementsByClassName('status')[0].classList.add('green')
-                                            } else if (result[1].includes('MISSING')){
+                                            } else if (result[1].includes('MISSING') || result[1].includes('BETWEEN_FC')){
                                              package.getElementsByClassName('status')[0].classList.add('yellow')
                                             }
                                         }
