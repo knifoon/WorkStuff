@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         EagleEye 2.0
 // @namespace    https://github.com/knifoon/WorkStuff
-// @version      1.5
+// @version      1.6
 // @description  Better EagleEye
 // @author       ricaarre
 // @match        https://knifoon.github.io/eagleeye/
@@ -9,9 +9,33 @@
 // @grant        GM_addStyle
 // ==/UserScript==
 GM_addStyle (`
+#list h3{
+display: inline-block;
+margin: 5px 5px 5px 0;
+}
 .eagleEye li:first-child {
 border-top: solid 1px #e7e7e7;
 
+}
+.status {
+margin: 5px;
+vertical-align: top;
+display: inline-block;
+}
+.status div {
+height: 100%;
+display: inline-block;
+font-size: 12px;
+vertical-align: middle;
+padding: 3px 9px;
+background: #e3e3e3;
+color: #555;
+border-radius: 4px;
+}
+
+.status.red div{
+background: rgb(255, 92, 122);
+color: #fff;
 }
 .pkgdetails li {
 list-style: none;
@@ -38,7 +62,7 @@ font-size: 12px;
     console.log('loaded');
         const targetNode = document.getElementById('list');
             const config = {
-                    attributes: true,
+                    attributes: false,
                     childList: true,
                     subtree: true
                 },
@@ -49,9 +73,10 @@ font-size: 12px;
                 var list = Array.from(document.querySelectorAll('#list>li'));
                     list.forEach((package, index) => {
                         let TBA = package.getElementsByTagName('h3')[0];
-                        let pkgDetails = package.querySelector('div');
+                        let pkgDetails = package.getElementsByClassName('pkgdetails')[0];
                         if(pkgDetails.getAttribute('tba') != TBA.innerHTML){
                             var tbaN = TBA.innerHTML;
+                            TBA.insertAdjacentHTML('afterend',`<span class="status"></span>`);
                             pkgDetails.setAttribute('tba',tbaN);
                             pkgDetails.innerHTML = `Fetching Contents`;
                             var getEncrypted = new Promise(function(resolve, reject) {
@@ -99,7 +124,12 @@ font-size: 12px;
                                                 formated.push(`<li><div class="count">${count}</div><div class="itemName"><a href="https://www.amazon.com/dp/${prodId}" target="_blank">${prodId}</a> , ${itemName.replace(';','\n')}</div></li>`);
                                                 itemCount += parseInt(count);
                                             });
-                                            pkgDetails.innerHTML = `<span class="meta"><a href="https://compwebsite-na.amazon.com/comp/shipmentDetail?id=${result[2]}&shipmentType=Delivery" target="_blank">${result[1]}</a> | <a href="https://fc-hitch.iad.proxy.amazon.com/gp/fc-application-services/hitch-report/shipment-display.html?warehouseId=${result[3].warehouse}&shipmentId=${result[3].id}" target="_blank">Hitch</a></span></br>Contents (${itemCount}):${formated.join('')}`;
+                                            pkgDetails.innerHTML = `<span class="meta"><a href="https://fc-hitch.iad.proxy.amazon.com/gp/fc-application-services/hitch-report/shipment-display.html?warehouseId=${result[3].warehouse}&shipmentId=${result[3].id}" target="_blank">Hitch</a></span></br>Contents (${itemCount}):${formated.join('')}`;
+                                            if(package.getElementsByClassName('status').length > 1)package.getElementsByClassName('status')[1].remove();
+                                            package.getElementsByClassName('status')[0].innerHTML = `<a href="https://compwebsite-na.amazon.com/comp/shipmentDetail?id=${result[2]}&shipmentType=Delivery" target="_blank"><div>${result[1]}</div></a>`;
+                                            if (result[1].includes('FC')){
+                                                package.getElementsByClassName('status')[0].classList.add('red')
+                                            };
                                         }
                                     })
                                 }, function(err) {
