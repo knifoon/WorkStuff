@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         EagleEye 2.0
 // @namespace    https://github.com/knifoon/WorkStuff
-// @version      1.6
+// @version      1.7
 // @description  Better EagleEye
 // @author       ricaarre
 // @match        https://knifoon.github.io/eagleeye/
@@ -36,6 +36,14 @@ border-radius: 4px;
 .status.red div{
 background: rgb(255, 92, 122);
 color: #fff;
+}
+.status.green div{
+background: #00d1b2;
+color: #fff;
+}
+.status.yellow div{
+background-color: #ffdd57;
+color: rgba(0,0,0,.7);
 }
 .pkgdetails li {
 list-style: none;
@@ -129,7 +137,11 @@ font-size: 12px;
                                             package.getElementsByClassName('status')[0].innerHTML = `<a href="https://compwebsite-na.amazon.com/comp/shipmentDetail?id=${result[2]}&shipmentType=Delivery" target="_blank"><div>${result[1]}</div></a>`;
                                             if (result[1].includes('FC')){
                                                 package.getElementsByClassName('status')[0].classList.add('red')
-                                            };
+                                            } else if (result[1].includes('AT_STATION')){
+                                             package.getElementsByClassName('status')[0].classList.add('green')
+                                            } else if (result[1].includes('MISSING')){
+                                             package.getElementsByClassName('status')[0].classList.add('yellow')
+                                            }
                                         }
                                     })
                                 }, function(err) {
