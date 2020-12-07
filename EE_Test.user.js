@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         EagleEye 2.0
 // @namespace    https://github.com/knifoon/WorkStuff
-// @version      1.71
+// @version      1.72
 // @description  Better EagleEye
 // @author       ricaarre
 // @match        https://knifoon.github.io/eagleeye/
@@ -137,9 +137,9 @@ font-size: 12px;
                                             package.getElementsByClassName('status')[0].innerHTML = `<a href="https://compwebsite-na.amazon.com/comp/shipmentDetail?id=${result[2]}&shipmentType=Delivery" target="_blank"><div>${result[1]}</div></a>`;
                                             if (result[1].includes('READY_FOR_FC_RETURN')){
                                                 package.getElementsByClassName('status')[0].classList.add('red')
-                                            } else if (result[1].includes('AT_STATION')){
+                                            } else if (result[1].startsWith('AT_STATION')){
                                              package.getElementsByClassName('status')[0].classList.add('green')
-                                            } else if (result[1].includes('MISSING') || result[1].includes('BETWEEN_FC')){
+                                            } else if (result[1].includes('MISSING') || result[1].includes('BETWEEN_FC') || result[1].includes('DELAYED') ){
                                              package.getElementsByClassName('status')[0].classList.add('yellow')
                                             }
                                         }
