@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         EagleEye 2.0
 // @namespace    https://github.com/knifoon/WorkStuff
-// @version      1.72
+// @version      1.73
 // @description  Better EagleEye
 // @author       ricaarre
 // @match        https://knifoon.github.io/eagleeye/
@@ -44,6 +44,10 @@ color: #fff;
 .status.yellow div{
 background-color: #ffdd57;
 color: rgba(0,0,0,.7);
+}
+.status.blue div{
+background-color: #9b9cf0;;
+color: #fff;
 }
 .pkgdetails li {
 list-style: none;
@@ -101,7 +105,7 @@ font-size: 12px;
                                             enc.push(res[0].package.details[res[0].package.details.length - 1].leg.compStatus)
                                             enc.push(res[0].package.details[res[0].package.details.length - 1].leg.compShipmentId)
                                             enc.push({warehouse:res[0].package.details[0].leg.nodeId,id:res[0].package.orderingShipmentId})
-                                            console.log(enc[2])
+                                            console.log(res)
                                             if (enc) {
                                                 resolve(enc)
                                             } else {
@@ -133,14 +137,17 @@ font-size: 12px;
                                                 itemCount += parseInt(count);
                                             });
                                             pkgDetails.innerHTML = `<span class="meta"><a href="https://fc-hitch.iad.proxy.amazon.com/gp/fc-application-services/hitch-report/shipment-display.html?warehouseId=${result[3].warehouse}&shipmentId=${result[3].id}" target="_blank">Hitch</a></span></br>Contents (${itemCount}):${formated.join('')}`;
+                                            // Status Tag
                                             if(package.getElementsByClassName('status').length > 1)package.getElementsByClassName('status')[1].remove();
                                             package.getElementsByClassName('status')[0].innerHTML = `<a href="https://compwebsite-na.amazon.com/comp/shipmentDetail?id=${result[2]}&shipmentType=Delivery" target="_blank"><div>${result[1]}</div></a>`;
-                                            if (result[1].includes('READY_FOR_FC_RETURN')){
+                                            if (result[1].includes('READY_FOR_FC_RETURN') || result[1].includes('DISPOSED')){
                                                 package.getElementsByClassName('status')[0].classList.add('red')
                                             } else if (result[1].startsWith('AT_STATION')){
                                              package.getElementsByClassName('status')[0].classList.add('green')
-                                            } else if (result[1].includes('MISSING') || result[1].includes('BETWEEN_FC') || result[1].includes('DELAYED') ){
+                                            } else if (result[1].includes('READY_FOR') | result[1].includes('AT_WRONG_STATION')){
                                              package.getElementsByClassName('status')[0].classList.add('yellow')
+                                            } else if (result[1].includes('MISSING') || result[1].includes('BETWEEN_FC') || result[1].includes('DELAYED') ){
+                                             package.getElementsByClassName('status')[0].classList.add('blue')
                                             }
                                         }
                                     })
