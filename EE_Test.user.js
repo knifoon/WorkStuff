@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         EagleEye 2.0
 // @namespace    https://github.com/knifoon/WorkStuff
-// @version      1.73
+// @version      1.74
 // @description  Better EagleEye
 // @author       ricaarre
 // @match        https://knifoon.github.io/eagleeye/
@@ -17,12 +17,12 @@ margin: 5px 5px 5px 0;
 border-top: solid 1px #e7e7e7;
 
 }
-.status {
+.status, .station{
 margin: 5px;
 vertical-align: top;
 display: inline-block;
 }
-.status div {
+.status div, .station div {
 height: 100%;
 display: inline-block;
 font-size: 12px;
@@ -33,19 +33,19 @@ color: #555;
 border-radius: 4px;
 }
 
-.status.red div{
+.red div{
 background: rgb(255, 92, 122);
 color: #fff;
 }
-.status.green div{
+.green div{
 background: #00d1b2;
 color: #fff;
 }
-.status.yellow div{
+.yellow div{
 background-color: #ffdd57;
 color: rgba(0,0,0,.7);
 }
-.status.blue div{
+.blue div{
 background-color: #9b9cf0;;
 color: #fff;
 }
@@ -68,6 +68,8 @@ width: 90%;
 }
 .meta {
 font-size: 12px;
+vertical-align: top;
+margin-left: 5px;
 }
 `);
 (function() {
@@ -100,11 +102,15 @@ font-size: 12px;
                                         },
                                         onload: function(response) {
                                             let res = JSON.parse(response.responseText);
-                                            let enc = [res[0].package.label];
+                                            let enc = {}
+                                            enc.code = [res[0].package.label];
                                             package.getElementsByTagName('h3')[0].innerHTML = res[0].package.trackingId;
-                                            enc.push(res[0].package.details[res[0].package.details.length - 1].leg.compStatus)
-                                            enc.push(res[0].package.details[res[0].package.details.length - 1].leg.compShipmentId)
-                                            enc.push({warehouse:res[0].package.details[0].leg.nodeId,id:res[0].package.orderingShipmentId})
+                                            pkgDetails.setAttribute('tba',res[0].package.trackingId);
+                                            enc.compStatus = res[0].package.details[res[0].package.details.length - 1].leg.compStatus;
+                                            enc.shipmentId = res[0].package.details[res[0].package.details.length - 1].leg.compShipmentId;
+                                            enc.stackingFilter = res[0].package.details[res[0].package.details.length - 1].leg.stackingFilter;
+                                            enc.station = res[0].package.details[res[0].package.details.length - 1].leg.nodeId;
+                                            enc.hitch ={warehouse:res[0].package.details[0].leg.nodeId,id:res[0].package.orderingShipmentId};
                                             console.log(res)
                                             if (enc) {
                                                 resolve(enc)
@@ -117,7 +123,7 @@ font-size: 12px;
                                 getEncrypted.then(function(result) {
                                     GM_xmlhttpRequest({
                                         method: "GET",
-                                        url: "https://eagleeye-na.amazon.com/itemdetails/" + result[0],
+                                        url: "https://eagleeye-na.amazon.com/itemdetails/" + result.code,
                                         headers: {
                                             'Content-type': 'application/json'
                                         },
@@ -136,18 +142,37 @@ font-size: 12px;
                                                 formated.push(`<li><div class="count">${count}</div><div class="itemName"><a href="https://www.amazon.com/dp/${prodId}" target="_blank">${prodId}</a> , ${itemName.replace(';','\n')}</div></li>`);
                                                 itemCount += parseInt(count);
                                             });
-                                            pkgDetails.innerHTML = `<span class="meta"><a href="https://fc-hitch.iad.proxy.amazon.com/gp/fc-application-services/hitch-report/shipment-display.html?warehouseId=${result[3].warehouse}&shipmentId=${result[3].id}" target="_blank">Hitch</a></span></br>Contents (${itemCount}):${formated.join('')}`;
+                                            pkgDetails.innerHTML = `<span class="meta"><a href="https://fc-hitch.iad.proxy.amazon.com/gp/fc-application-services/hitch-report/shipment-display.html?warehouseId=${result.hitch.warehouse}&shipmentId=${result.hitch.id}" target="_blank">Hitch</a></span></br>Contents (${itemCount}):${formated.join('')}`;
                                             // Status Tag
-                                            if(package.getElementsByClassName('status').length > 1)package.getElementsByClassName('status')[1].remove();
-                                            package.getElementsByClassName('status')[0].innerHTML = `<a href="https://compwebsite-na.amazon.com/comp/shipmentDetail?id=${result[2]}&shipmentType=Delivery" target="_blank"><div>${result[1]}</div></a>`;
-                                            if (result[1].includes('READY_FOR_FC_RETURN') || result[1].includes('DISPOSED')){
+                                           // If AMZ Package
+                                            if (!result.compStatus.includes('Not in COMP')){
+                                                result.compStatus = result.compStatus.slice(0,-7);
+                                                TBA.insertAdjacentHTML('afterend',`<span class="station"><div>${result.station}</div></span>`);
+                                            // Station Color
+                                                let milk = ['DLA3','DLA4','DLA5','DLA7','DLA9','DPS1','DPS3','DPS5','DPS6','DSD1','DSD2','DSD3','DSD8','DCX1','DCX2','DCX8','DAX3','DAX7','DAX8','DLX9','DOT4'
+];
+                                                if (result.station.startsWith('DLA8')){
+                                             package.getElementsByClassName('station')[0].classList.add('green')
+                                                } else if (milk.some(el => result.station.includes(el))){
+                                             package.getElementsByClassName('station')[0].classList.add('yellow')
+                                                } else {
+                                             package.getElementsByClassName('station')[0].classList.add('red')
+                                                }
+                                            }
+                                            // Status Color
+                                            package.getElementsByClassName('status')[0].innerHTML = `<a href="https://compwebsite-na.amazon.com/comp/shipmentDetail?id=${result.shipmentId}&shipmentType=Delivery" target="_blank"><div>${result.compStatus}</div></a>`;
+                                            if (result.compStatus.includes('READY_FOR_FC_RETURN') || result.compStatus.includes('DISPOSED') || result.compStatus.includes('Not in COMP')){
                                                 package.getElementsByClassName('status')[0].classList.add('red')
-                                            } else if (result[1].startsWith('AT_STATION')){
+                                            } else if (result.compStatus.startsWith('AT_STATION')){
                                              package.getElementsByClassName('status')[0].classList.add('green')
-                                            } else if (result[1].includes('READY_FOR') | result[1].includes('AT_WRONG_STATION')){
+                                            } else if (result.compStatus.includes('READY_FOR') | result.compStatus.includes('AT_WRONG_STATION')){
                                              package.getElementsByClassName('status')[0].classList.add('yellow')
-                                            } else if (result[1].includes('MISSING') || result[1].includes('BETWEEN_FC') || result[1].includes('DELAYED') ){
+                                            } else if (result.compStatus.includes('MISSING') || result.compStatus.includes('BETWEEN_FC') || result.compStatus.includes('DELAYED') ){
                                              package.getElementsByClassName('status')[0].classList.add('blue')
+                                            }
+                                            // check stacking filter
+                                            if (result.stackingFilter.length < 8){
+                                            package.getElementsByClassName('meta')[0].insertAdjacentHTML('afterbegin',`<strong>${result.stackingFilter}</strong> | `);
                                             }
                                         }
                                     })
