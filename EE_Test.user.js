@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         EagleEye 2.0
 // @namespace    https://github.com/knifoon/WorkStuff
-// @version      1.74
+// @version      1.75
 // @description  Better EagleEye
 // @author       ricaarre
 // @match        https://knifoon.github.io/eagleeye/
@@ -146,7 +146,7 @@ margin-left: 5px;
                                             // Status Tag
                                            // If AMZ Package
                                             if (!result.compStatus.includes('Not in COMP')){
-                                                result.compStatus = result.compStatus.slice(0,-7);
+                                                //result.compStatus = result.compStatus.slice(0,-7);
                                                 TBA.insertAdjacentHTML('afterend',`<span class="station"><div>${result.station}</div></span>`);
                                             // Station Color
                                                 let milk = ['DLA3','DLA4','DLA5','DLA7','DLA9','DPS1','DPS3','DPS5','DPS6','DSD1','DSD2','DSD3','DSD8','DCX1','DCX2','DCX8','DAX3','DAX7','DAX8','DLX9','DOT4'
