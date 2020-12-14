@@ -1,10 +1,11 @@
 // ==UserScript==
 // @name         CampusShip1
-// @namespace    http://tampermonkey.net/
-// @version      0.1
-// @description  try to take over the world!
-// @author       You
+// @namespace    https://github.com/knifoon/WorkStuff
+// @version      0.2
+// @description  Address drop down, plus check marks
+// @author       Ricaarre
 // @match        https://www.campusship.ups.com/cship/create?ActionOriginPair=CreateAShipment___StartSession
+// @match        https://www.campusship.ups.com/cship/create?loc=en_US
 // @grant        none
 // ==/UserScript==
 
