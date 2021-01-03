@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         EagleEye 2.0
 // @namespace    https://github.com/knifoon/WorkStuff
-// @version      1.76
+// @version      1.77
 // @description  Better EagleEye
 // @author       ricaarre
 // @match        https://knifoon.github.io/eagleeye/
@@ -74,6 +74,11 @@ margin-left: 5px;
 `);
 (function() {
     console.log('loaded');
+    document.addEventListener("visibilitychange", function() {
+  if (document.visibilityState === 'visible') {
+      document.getElementById('tbaInput').focus();
+  }
+});
         const targetNode = document.getElementById('list');
             const config = {
                     attributes: false,
