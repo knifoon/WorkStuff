@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         EagleEye 2.0
 // @namespace    https://github.com/knifoon/WorkStuff
-// @version      1.77
+// @version      1.78
 // @description  Better EagleEye
 // @author       ricaarre
 // @match        https://knifoon.github.io/eagleeye/
@@ -115,6 +115,7 @@ margin-left: 5px;
                                             enc.shipmentId = res[0].package.details[res[0].package.details.length - 1].leg.compShipmentId;
                                             enc.stackingFilter = res[0].package.details[res[0].package.details.length - 1].leg.stackingFilter;
                                             enc.station = res[0].package.details[res[0].package.details.length - 1].leg.nodeId;
+                                            enc.hazmat = res[0].package.hasHazmatItem;
                                             enc.hitch ={warehouse:res[0].package.details[0].leg.nodeId,id:res[0].package.orderingShipmentId};
                                             console.log(res)
                                             if (enc) {
@@ -180,6 +181,10 @@ margin-left: 5px;
                                              package.getElementsByClassName('status')[0].classList.add('yellow')
                                             } else if (result.compStatus.includes('MISSING') || result.compStatus.includes('BETWEEN_FC') || result.compStatus.includes('DELAYED') ){
                                              package.getElementsByClassName('status')[0].classList.add('blue')
+                                            }
+                                            // check Hazmat
+                                            if (result.hazmat){
+                                            package.getElementsByClassName('meta')[0].insertAdjacentHTML('afterbegin',`<strong>HAZMAT</strong> | `);
                                             }
                                             // check stacking filter
                                             if (result.stackingFilter.length < 8){
