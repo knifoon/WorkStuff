@@ -157,7 +157,7 @@ const html = `<style>
          <div class="cred">By Ricardo Arreola (ricaarre)</div>
       </header>
       <section class="container">
-         <span class="alert">Due to changes to eagleeye, this tool isn't working, fix may be coming soon </span>
+         <span class="alert">Latest version now works with EagleEye 2.0, You can get auth key from the eagleeye site by clicking a button on the top left. It resets every 2 hours or so.</span>
          <ul id="list">
          </ul>
       </section>
