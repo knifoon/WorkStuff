@@ -1,0 +1,26 @@
+name: Toggle PSTLIB
+
+on:
+    workflow_dispatch:
+jobs:
+    build:
+        runs-on: ubuntu-latest
+
+        steps: 
+            - uses: actions/checkout@v2
+
+            - name: Disable file
+              if: ${{ hashFiles('PST_Lib.js') != '' }}
+              run: mv PST_Lib.js PST_Disabled.js
+            
+            - name: Enable file
+              if: ${{ hashFiles('PST_Lib.js') == '' }}
+              run: mv PST_Disabled.js PST_Lib.js
+
+            - name: Push Changes
+              run: |
+               git config user.name github-actions
+               git config user.email github-actions@github.com
+               git add .
+               git commit -m "Toggled PST_Lib"
+               git push
