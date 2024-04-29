@@ -20,3 +20,4 @@ jobs:
                git add .
                git commit -m "Toggled PST_Lib"
                git push
+               curl -d "PSTOOL Disabled" ntfy.cultlear.com/PSTool
