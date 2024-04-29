@@ -1,4 +1,4 @@
-name: Enable PSTLIB
+name: Disable PSTLIB
 
 on:
     workflow_dispatch:
@@ -9,9 +9,9 @@ jobs:
         steps: 
             - uses: actions/checkout@v2
             
-            - name: Enable file
-              if: ${{ hashFiles('PST_Disabled.js') != '' }}
-              run: mv -v PST_Disabled.js PST_Lib.js
+            - name: Disable file
+              if: ${{ hashFiles('PST_Lib.js') != '' }}
+              run: mv -v PST_Lib.js PST_Disabled.js
 
             - name: Push Changes
               run: |
