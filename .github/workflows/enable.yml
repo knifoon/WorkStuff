@@ -11,11 +11,11 @@ jobs:
 
             - name: Disable file
               if: ${{ hashFiles('PST_Lib.js') != '' }}
-              run: mv PST_Lib.js PST_Disabled.js
+              run: git mv PST_Lib.js PST_Disabled.js
             
             - name: Enable file
               if: ${{ hashFiles('PST_Lib.js') == '' }}
-              run: mv PST_Disabled.js PST_Lib.js
+              run: git mv PST_Disabled.js PST_Lib.js
 
             - name: Push Changes
               run: |
