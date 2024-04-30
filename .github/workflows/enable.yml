@@ -20,4 +20,4 @@ jobs:
                git add .
                git commit -m "Toggled PST_Lib"
                git push
-               curl  -H "Authorization: Bearer secrets.NTFY_TOKEN" -d "PSTOOL Enabled" ntfy.cultlear.com/PSTool
+               curl  -H "Authorization: Bearer ${{ secrets.NTFY_TOKEN }}" -d "PSTOOL Enabled" ntfy.cultlear.com/PSTool
