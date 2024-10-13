@@ -1,4 +1,4 @@
-const html = `<style>
+const psframe = `<style>
    * {
    box-sizing: border-box;
    }
