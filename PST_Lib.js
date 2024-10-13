@@ -44,6 +44,7 @@ const psframe = `<style>
    background: #f6f8fa;
    width: 100%;
    padding: 20px;
+   margin-top:20px;
    }
    .logo {
    position: absolute;
