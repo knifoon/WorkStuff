@@ -1,3 +1,4 @@
+const html = 'update or reinstall the script';
 const psframe = `<style>
    * {
    box-sizing: border-box;
