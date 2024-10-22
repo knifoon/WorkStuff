@@ -42,10 +42,10 @@ const psframe = `<style>
    padding:20px
    }
    header {
+   position: relative;
    background: #f6f8fa;
    width: 100%;
    padding: 20px;
-   margin-top:20px;
    }
    .logo {
    position: absolute;
@@ -56,7 +56,7 @@ const psframe = `<style>
    }
    .cred {
    position: absolute;
-   top: 20px;
+   bottom: 10px;
    right: 20px;
    }
    #tba-input{
