@@ -159,7 +159,7 @@ const psframe = `<style>
          <div class="cred">By Ricardo Arreola (ricaarre)</div>
       </header>
       <section class="container">
-         <span class="alert">Latest version now works with EagleEye 2.0, You can get auth key from the eagleeye site by clicking a button on the top left. It resets every 2 hours or so.</span>
+         <span class="alert">update to version 0.43, it now gets the eagle eye auth automatically</span>
          <ul id="list">
          </ul>
       </section>
