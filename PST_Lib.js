@@ -120,6 +120,15 @@ const psframe = `<style>
    padding: 20px;
    border-bottom: solid 1px #e7e7e7;
    }
+   .pkg-details img {
+   transition: 0.3s ease-in-out;
+   background: #fff;
+   border: solid 1px #eee;
+   padding: 5px;
+   }
+   .pkg-details img:hover {
+   transform: scale(5);
+   }
    .pkg-details .count {
    display: inline-block;
    width: 10%;
