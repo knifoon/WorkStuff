@@ -159,7 +159,7 @@ const psframe = `<style>
          <div class="cred">By Ricardo Arreola (ricaarre)</div>
       </header>
       <section class="container">
-         <span class="alert">looks like the last update broke the script for most people, i'll fix it SOON&#8482</span>
+         <span class="alert">Version .45 should fix things, please update</span>
          <ul id="list">
          </ul>
       </section>
