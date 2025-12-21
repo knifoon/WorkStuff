@@ -168,7 +168,7 @@ const psframe = `<style>
          <div class="cred">By Ricardo Arreola (ricaarre)</div>
       </header>
       <section class="container">
-         <span class="alert">Version .47 should fix auth issues and wrong items showing up</span>
+         <span class="alert">Not working due to API changes. Will fix Soon™</span>
          <ul id="list">
          </ul>
       </section>
